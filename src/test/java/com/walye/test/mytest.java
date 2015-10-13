@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,33 +20,38 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.walye.controller.UserController;
 import com.walye.entity.User;
 import com.walye.service.AopService;
-import com.walye.service.IQuestionService;
 import com.walye.service.IUserService;
+import com.walye.service.QuestionService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext.xml",
 		"classpath:spring-servlet.xml" })
+@Transactional
 public class mytest {
 
 	@Resource
 	AopService aopService;
 
 	@Mock
+	IUserService mockuserService;
+
+	@Resource
 	IUserService userService;
 
 	@InjectMocks
-	@Resource
-	IQuestionService questionService;
+	QuestionService questionService;
 
 	@Resource
 	UserController userController;
@@ -67,11 +73,10 @@ public class mytest {
 
 	@Test
 	public void testfind() {
-		when(userService.findUserById(1))
-				.thenReturn(new User(1, "zhuweiqiang"));
+		when(mockuserService.findUserById(1)).thenReturn(
+				new User(1, "zhuweiqiang"));
 		User user = questionService.findUserById(1);
-		// User user = userService.findUserById(1);
-		System.out.println(user.getId() + user.getName());
+		Assert.assertEquals(new User(1, "zhuweiqiang"), user);
 	}
 
 	@Test
@@ -98,4 +103,20 @@ public class mytest {
 						model().attribute("user", new User(1, "zhuweiqiang1")));
 	}
 
+	@Test
+	public void testadd() {
+		User user = new User("zhuweiqiang2");
+		long newid = userService.addUser(user);
+		Assert.assertNotNull(newid);
+		User newuser = userService.findUserById(newid);
+		Assert.assertSame(user, newuser);
+
+	}
+
+	@Repeat(1)
+	@Test(timeout=2000)
+	public void testtimeout() throws InterruptedException {
+		System.out.println("----");
+		Thread.sleep(1*1000);
+	}
 }

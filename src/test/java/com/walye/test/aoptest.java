@@ -34,6 +34,7 @@ public class aoptest {
 	public void testAop() {
 		aopService.swimming("walye");
 		//1
+		//3
 	}
 
 }

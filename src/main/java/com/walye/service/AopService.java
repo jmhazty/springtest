@@ -8,6 +8,7 @@ import com.walye.interceptor.DoAopAnnotation;
 public class AopService {
 	@DoAopAnnotation(where = "in beijing")
 	public String swimming(String name){
+		//2
 		return name + " is swimming ";
 //		throw new RuntimeException("wife call");
 	}

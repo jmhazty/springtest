@@ -33,6 +33,7 @@ public class aoptest {
 	@Test
 	public void testAop() {
 		aopService.swimming("walye");
+		//1
 	}
 
 }

@@ -31,19 +31,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.walye.controller.UserController;
 import com.walye.entity.User;
-import com.walye.service.AopService;
+import com.walye.service.IQuestionService;
 import com.walye.service.IUserService;
-import com.walye.service.QuestionService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext.xml",
 		"classpath:spring-servlet.xml" })
 @Transactional
 public class mytest {
-
-	@Resource
-	AopService aopService;
-
 	@Mock
 	IUserService mockuserService;
 
@@ -51,7 +46,8 @@ public class mytest {
 	IUserService userService;
 
 	@InjectMocks
-	QuestionService questionService;
+	@Resource
+	IQuestionService questionService;
 
 	@Resource
 	UserController userController;
@@ -64,11 +60,6 @@ public class mytest {
 	@After
 	public void tearDown() throws Exception {
 
-	}
-
-	@Test
-	public void testAop() {
-		aopService.doAop();
 	}
 
 	@Test
@@ -105,11 +96,21 @@ public class mytest {
 
 	@Test
 	public void testadd() {
-		User user = new User("zhuweiqiang2");
+		User user = new User("zhuweiqiang5");
 		long newid = userService.addUser(user);
 		Assert.assertNotNull(newid);
 		User newuser = userService.findUserById(newid);
 		Assert.assertSame(user, newuser);
+
+	}
+	
+	@Test
+	public void testadd1() {
+		User user = new User("zhuweiqiang6");
+		long newid = userService.addUser(user);
+		Assert.assertNotNull(newid);
+		User newuser = userService.findUserById(newid);
+		Assert.assertEquals(user, newuser);
 
 	}
 

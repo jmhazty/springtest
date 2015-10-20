@@ -9,18 +9,18 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class AopTest {
-	@Pointcut("@annotation(DoAopAnnotation)")
-	public void pointcut(){	
-	}
-	@Around("pointcut()")
-	public Object doaop(ProceedingJoinPoint point) throws Throwable {
-		// TODO Auto-generated method stub
-		String name = point.getSignature().getName();
-		System.out.println("do " + name + "before");
-		Object result = point.proceed();
-		System.out.println(result);
-		System.out.println("do " + name + "after");
-		return result;
-	}
+//	@Pointcut("@annotation(an)")
+//	public void pointcut(DoAopAnnotation an){	
+//	}
+//	@Around(value = "pointcut(an)")
+//	public Object doaop(ProceedingJoinPoint point, DoAopAnnotation an) throws Throwable {
+//		// TODO Auto-generated method stub
+//		String name = point.getSignature().getName();
+//		System.out.println("do " + name + "before" + an.name());
+//		Object result = point.proceed();
+//		System.out.println(result);
+//		System.out.println("do " + name + "after");
+//		return result;
+//	}
 
 }
